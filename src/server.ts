@@ -1,14 +1,15 @@
 import express, { type Application, type Request, type Response } from "express"
 import {Pool} from "pg"
-import { initDB } from "./database";
+import { initDB } from "./database/database";
+import config from "./config/env";
 
 const app : Application = express();
-const port = 5000;
+const port = config.port;
 
 app.use(express.json());
 
 export const pool = new Pool({
-    connectionString : "postgresql://neondb_owner:npg_zI6RPUlN2Jxv@ep-divine-sky-adnk6wto-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+    connectionString : config.connection_string
 })
 
 
@@ -23,12 +24,19 @@ app.get('/', (req:Request, res:Response) => {
 });
 
 app.post('/', async (req:Request, res:Response) => {
+
+    const {name, email, password, role} = req.body;
+
+    const result = await pool.query(`
+            INSERT INTO users(name, email, password , role) VALUES($1, $2, $3, $4)
+            RETURNING *
+        `,[name, email, password, role])
     // console.log(req.body);
-    const {name, email} = req.body;
+    
     res.status(201).json({
         success : true,
         message : "data retrived successfully",
-        data : {name, email},
+        data : {name, email, role},
     })
 });
 

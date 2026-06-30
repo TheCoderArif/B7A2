@@ -18,10 +18,12 @@
     "typescript": "^6.0.3"
   },
   "dependencies": {
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "pg": "^8.22.0"
   },
   "allowScripts": {
-    "pg@8.22.0": true
+    "pg@8.22.0": true,
+    "dotenv@17.4.2": true
   }
 }
