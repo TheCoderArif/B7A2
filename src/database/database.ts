@@ -1,5 +1,10 @@
-// import { Pool } from "pg";
-import { pool } from "../server";
+import { Pool } from "pg";
+import config from "../config/env";
+
+export const pool = new Pool({
+    connectionString : config.connection_string
+})
+
 
 export const initDB = async () => {
     try {
